@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django_filters",
 
     "polls.apps.PollsConfig",
+    'accounts.apps.AccountsConfig'
 ]
 
 MIDDLEWARE = [
@@ -136,3 +137,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"]
 }
+
+#After Login Redirect Page
+LOGIN_REDIRECT_URL = '/polls/'
+LOGOUT_REDIRECT_URL = '/accounts/login/'

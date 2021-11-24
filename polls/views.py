@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 from rest_framework import viewsets
-
+from django.db.models import F
 from utils.url import restify
 
 from .models import Choice, Question
@@ -31,7 +31,6 @@ class ResultsView(generic.DetailView):
     model = Question
     template_name = "polls/results.html"
 
-
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
@@ -47,12 +46,21 @@ def vote(request, question_id):
             },
         )
     else:
-        selected_choice.votes += 1
+        #selected_choice.votes += 1
+        #Use mutex_lock, Solve Race Condition
+        selected_choice.votes = F('votes') + 1
         selected_choice.save()
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
+
+def index(request) :
+    return render(request, "polls/index.html")
+
+def read_json(path) :
+    return json.loads(read_file(path))
+
 
 
 # API

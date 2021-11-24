@@ -1,9 +1,17 @@
-{% if latest_question_list %}
-    <ul>
-    {% for question in latest_question_list %}
-        <li><a href={% url 'polls:detail' question.id %}>{{ question.question_text }}</a></li>
-    {% endfor %}
-    </ul>
+<div>
+   <ul>
+{% if user.is_active %}
+    User : {{ user }}
+    <li><a href="{% url 'logout' %}?next={{ request.get_full_path }}">Logout</a></li>
+    {% if latest_question_list %}
+        {% for question in latest_question_list %}
+            <li><a href={% url 'polls:detail' question.id %}>{{ question.question_text }}</a></li>
+        {% endfor %}
+    {% else %}
+        <p>No polls are available.</p>
+    {% endif %}
 {% else %}
-    <p>No polls are available.</p>
+    <li><a href="{% url 'login' %}">Please Login!</a></li>
 {% endif %}
+   </ul>
+</div>
