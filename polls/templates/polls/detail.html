@@ -10,3 +10,30 @@
 </fieldset>
 <input type="submit" value="Vote">
 </form>
+<hr>
+<h3> * Choice Suggestion *</h3>
+    <form action="{% url 'polls:suggestion' question.id %}"method="post">
+        {% csrf_token %}
+        <input type="text" name="text">
+        <button type="submit" value = "suggestion">Suggestion</button>
+    </form>
+<hr>
+<!--답변등록을 위한 것-->
+<form action="{% url 'polls:comment_create' question.id %}" method="post">
+{% csrf_token %}
+<textarea name="content" id="content" rows="1"></textarea>
+<input type="submit" value="Comment Add">
+</form>
+
+<!--답변을 보기 위한 것-->
+<div>
+    <ul>
+    {% for comment in question.comment_set.all %}
+        <li>{{ comment.content }} - commented by - {{ user }} at {{ comment.create_date }}</li>
+                <div class="box">
+                    <a href="{% url 'polls:reply_create' comment.pk %}">답글</a>
+                </div>
+    {% endfor %}
+    </ul>
+</div>
+

@@ -2,7 +2,8 @@
    <ul>
 {% if user.is_active %}
     User : {{ user }}
-    <li><a href="{% url 'logout' %}?next={{ request.get_full_path }}">Logout</a></li>
+    <a href="{% url 'logout' %}?next={{ request.get_full_path }}">Logout</a>
+    <hr>
     {% if latest_question_list %}
         {% for question in latest_question_list %}
             <li><a href={% url 'polls:detail' question.id %}>{{ question.question_text }}</a></li>
