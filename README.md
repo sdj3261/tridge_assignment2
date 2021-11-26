@@ -31,7 +31,7 @@ python manage.py runserver
 4.  [ ] Enable to comment on comment
 5.  [x] Enable to suggest new choice for question
 6.  [x] Limit the number of choices that can be suggested on one question
-7.  [ ] Extends `Question.closed_at` by one day, when new choice is suggested for that question
+7.  [x] Extends `Question.closed_at` by one day, when new choice is suggested for that question
      - Requirements:
          - Use Django signal/receiver system
 8.  [ ] In `/polls/`, fetch only 5 questions through REST API
