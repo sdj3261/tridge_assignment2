@@ -2,8 +2,18 @@
 
 <ul>
 {% for choice in question.choice_set.all %}
+    {% if choice.approved is True %}
     <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+    {% endif %}
 {% endfor %}
 </ul>
 
 <a href="{% url 'polls:detail' question.id %}">Vote again?</a>
+
+<h3> * Choice Suggestion *</h3>
+    <form action="{% url 'polls:suggestion' question.id %}"method="post">
+        {% csrf_token %}
+        <input type="text" name="text">
+        <button type="submit" value = "suggestion">Suggestion</button>
+    </form>
+<hr>

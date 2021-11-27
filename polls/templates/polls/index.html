@@ -1,8 +1,14 @@
 <div>
    <ul>
-{% if user.is_active %}
+{% if user.is_authenticated %}
     User : {{ user }}
     <a href="{% url 'logout' %}?next={{ request.get_full_path }}">Logout</a>
+    <br>
+    <form action="{% url 'polls:globalsearch' %}" method="post">
+{% csrf_token %}
+<input type="search" name="search_key" value="{{search_key}}">
+<button type="submit">Search</button>
+</form>
     <hr>
     {% if latest_question_list %}
         {% for question in latest_question_list %}
@@ -16,3 +22,5 @@
 {% endif %}
    </ul>
 </div>
+
+

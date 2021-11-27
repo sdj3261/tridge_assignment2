@@ -10,6 +10,6 @@ urlpatterns = [
     path('<int:question_id>/vote/', views.vote, name='vote'),
     path('comment/create/<int:question_id>/', views.comment_create, name='comment_create'),
     path('reply/<int:comment_pk>/', views.reply_create, name='reply_create'),
-    path('search/', views.globalsearch),
+    path('search/', views.globalsearch, name='globalsearch'),
     path('suggestion/create/<int:question_id>', views.suggestion, name='suggestion'),
 ]

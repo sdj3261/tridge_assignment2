@@ -8,11 +8,11 @@ from .models import Question, Choice
 
 
 @receiver(post_save, sender=Choice)
-def question_post_save(sender, **kwargs):
-    question = kwargs['instance'].question
-    question.is_public = False
-    question.pub_date = timezone.now() + datetime.timedelta(days=1)
-    question.save()
+def question_post_save(sender, created, **kwargs):
+    if created :
+        question = kwargs['instance'].question
+        question.closed_at += datetime.timedelta(days=1)
+        question.save()
 
 
 post_save.connect(question_post_save, sender=Choice)

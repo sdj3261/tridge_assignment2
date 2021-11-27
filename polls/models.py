@@ -7,8 +7,8 @@ from django.utils import timezone
 
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
-    is_public = models.BooleanField(default=False, verbose_name='Published/Closed')
     pub_date = models.DateTimeField("date published")
+    closed_at = models.DateTimeField(default=timezone.now() + datetime.timedelta(days=3))
 
 
     def __str__(self):
@@ -20,6 +20,7 @@ class Question(models.Model):
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    approved = models.BooleanField(default=True)
     choice_text = models.CharField(max_length=200)
     votes = models.IntegerField(default=0)
 
@@ -32,7 +33,7 @@ class Comment(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     content = models.CharField(max_length=200)
     create_date = models.DateTimeField(default=django.utils.timezone.now)
-    parent = models.ForeignKey('self', null= True, blank = True, on_delete=models.CASCADE)
+    parent = models.ForeignKey('self', null= True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.question.question_text

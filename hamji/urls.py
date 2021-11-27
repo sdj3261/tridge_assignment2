@@ -20,14 +20,14 @@ from rest_framework import routers
 import polls.views
 
 from . import views
-from polls.views import index
+
 
 router = routers.DefaultRouter()
 router.register(r"users", views.UserViewSet)
 router.register(r"questions", polls.views.QuestionViewSet)
 
 urlpatterns = [
-    path('', polls.views.index, name = 'index'),
+    path('', polls.views.IndexView.as_view()),
     path("_api/", include(router.urls)),
     path("polls/", include("polls.urls")),
     path("admin/", admin.site.urls),
