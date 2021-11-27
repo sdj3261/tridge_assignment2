@@ -38,5 +38,5 @@ python manage.py runserver
 9.  [x] Handle race condition on handling "vote" action
 10. [x] Implement login system
 11. [ ] Implement system that a question creator can approve suggested choices
-12. [ ] Implement global search for questions and choices
+12. [x] Implement global search for questions and choices
 
