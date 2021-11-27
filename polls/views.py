@@ -79,8 +79,7 @@ def vote(request, question_id):
 def comment_create(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     question.comment_set.create(content=request.POST.get('content'))
-    comment_set_desc = question.comment_set.order_by('create_date')
-    return HttpResponseRedirect(reverse("polls:detail", context=comment_set_desc, args=(question.id,)))
+    return HttpResponseRedirect(reverse("polls:detail", args=(question.id,)))
 
 
 @login_required

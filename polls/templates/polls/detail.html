@@ -23,10 +23,10 @@
 <!--comment-->
 <div>
     <ul>
-    {% for comment in comment_set_desc %}
+    {% for comment in question.comment_set.all %}
         <li>{{ comment.content }} - commented by - {{ user }} at {{ comment.create_date }}</li>
                 <div>
-                    <a href="{% url 'polls:reply_create' comment.pk %}">답글</a>
+                    <a href="{% url 'polls:reply_create' comment.pk %}">Reply</a>
                 </div>
     {% endfor %}
     </ul>
