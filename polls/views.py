@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from rest_framework import viewsets
 from django.db.models import F, Q
 from utils.url import restify
-from .forms import CommentForm
+from .forms import CommentForm, RecommentForm
 from .models import Choice, Question, Comment
 from .serializers import QuestionSerializer
 
@@ -35,7 +35,10 @@ class DetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['comment_list'] = self.object.comment_set.filter(parent__isnull=True)
+        comment_form = CommentForm()
+        recomment_form = RecommentForm()
+        context['comment_form'] = comment_form
+        context['recomment_form'] = recomment_form
         return context
 
 
@@ -78,28 +81,38 @@ def vote(request, question_id):
 @login_required
 def comment_create(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
-    question.comment_set.create(content=request.POST.get('content'))
+    filled_form = CommentForm(request.POST)
+    if filled_form.is_valid():
+        form = filled_form.save(commit=False)
+        form.question = Question.objects.get(id=question_id)
+        form.save()
     return HttpResponseRedirect(reverse("polls:detail", args=(question.id,)))
-
 
 @login_required
-def reply_create(request, comment_pk):
-    comment = get_object_or_404(Comment, pk=comment_pk)
-    question = comment.question
-    form = CommentForm(request.POST or None)
-    if request.method == 'POST':
-        reply = form.save(commit=False)
-        reply.parent = comment
-        reply.question = question
-        reply.save()
-        return HttpResponseRedirect(reverse("polls:detail", args=(question.id,)))
-    context = {
-        'form': form,
-        'question': question,
-        'comment': comment,
-    }
+def comment_update(request,comment_id,question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    comment = Comment.objects.get(id=comment_id)
+    form = CommentForm(instance = comment)
+    if request.method == "POST" :
+        update_form = CommentForm(request.POST, instance = comment)
+        if update_form.is_valid() :
+            update_form.save()
+            return HttpResponseRedirect(reverse("polls:detail", args=(question.id,)))
+    return render(request,'polls/update.html',{'form':form})
+@login_required
+def comment_delete(request, comment_id, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    comment = Comment.objects.get(id=comment_id)
+    comment.delete()
     return HttpResponseRedirect(reverse("polls:detail", args=(question.id,)))
 
+@login_required
+def recomment_create(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    recomment_form = RecommentForm(request.POST)
+    if recomment_form.is_valid():
+        recomment_form.save()
+    return HttpResponseRedirect(reverse("polls:detail", args=(question.id,)))
 
 @login_required
 def globalsearch(request):

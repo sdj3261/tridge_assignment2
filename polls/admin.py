@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.contrib import admin
 
-from .models import Choice, Question, Comment
+from .models import Choice, Question, Comment, ReComment
 
 
 @admin.register(Question)  # Wrapping
@@ -28,6 +28,8 @@ class ChoiceAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Comment)
+admin.site.register(ReComment)
+
 
 from django.contrib import admin
 from . import models

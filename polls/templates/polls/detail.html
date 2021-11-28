@@ -13,22 +13,36 @@
 <input type="submit" value="Vote">
 </form>
 <hr>
-<!--comment add-->
-<form action="{% url 'polls:comment_create' question.id %}" method="post">
-{% csrf_token %}
-<textarea name="content" id="content" rows="1"></textarea>
-<input type="submit" value="Comment Add">
+<br>
+<form method="post" action="{% url 'polls:comment_create' question.id %}">
+    {% csrf_token %}
+    {{ comment_form }}
+    <input type="submit" value="Coment Add">
 </form>
+<hr>
 
-<!--comment-->
-<div>
-    <ul>
     {% for comment in question.comment_set.all %}
-        <li>{{ comment.content }} - commented by - {{ user }} at {{ comment.create_date }}</li>
-                <div>
-                    <a href="{% url 'polls:reply_create' comment.pk %}">Reply</a>
-                </div>
+        Comment : {{ comment.content }}
+        at {{ comment.create_date }}
+        <a href = "{%  url 'polls:comment_update' question.id comment.id %}">Edit</a>
+        <a href = "{%  url 'polls:comment_delete' question.id comment.id %}">Delete</a>
+        <form method="post" action="{% url 'polls:recomment_create' question.id %}">
+            {% csrf_token %}
+            {% for recomment in recomment_form %}
+                {% if recomment.label != 'comment' %}
+                    Re : {{ recomment }}
+                {% endif %}
+            {% endfor %}
+            <input type="hidden" name="comment" value = {{comment.id}}>
+            <input type="submit" value="Reply">
+        </form>
+        {% for recom in comment.recomment_set.all %}
+            -> {{ recom }} at {{ recom.create_date }}<br>
+        {% endfor %}
+        <hr>
     {% endfor %}
-    </ul>
-</div>
+<br>
+<hr>
+
+
 
