@@ -24,6 +24,7 @@
     {% for comment in question.comment_set.all %}
         Comment : {{ comment.content }}
         at {{ comment.create_date }}
+        by {{ user }}
         <a href = "{%  url 'polls:comment_update' question.id comment.id %}">Edit</a>
         <a href = "{%  url 'polls:comment_delete' question.id comment.id %}">Delete</a>
         <form method="post" action="{% url 'polls:recomment_create' question.id %}">
