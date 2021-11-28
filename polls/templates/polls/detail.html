@@ -13,7 +13,7 @@
 <input type="submit" value="Vote">
 </form>
 <hr>
-<br>
+<h3>Comment</h3>
 <form method="post" action="{% url 'polls:comment_create' question.id %}">
     {% csrf_token %}
     {{ comment_form }}
@@ -37,7 +37,7 @@
             <input type="submit" value="Reply">
         </form>
         {% for recom in comment.recomment_set.all %}
-            -> {{ recom }} at {{ recom.create_date }}<br>
+            -> {{ recom }} at {{ recom.create_date }} by {{ user }}<br>
         {% endfor %}
         <hr>
     {% endfor %}

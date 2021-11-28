@@ -7,10 +7,11 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('content',)
+        labels = {'content': '',}
 
 
 class RecommentForm(forms.ModelForm):
     class Meta:
         model = ReComment
         fields = ('content', 'comment')
-        labels = {'content':'content', 'comment' :'comment'}
+        labels = {'content':'', 'comment' :'comment'}
